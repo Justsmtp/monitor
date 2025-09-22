@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'monitor_app',
 ]
 
 MIDDLEWARE = [
@@ -50,6 +51,17 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'monitor_project.urls'
+
+# Celery settings
+CELERY_BROKER_URL = "redis://127.0.0.1:6379/0"
+CELERY_RESULT_BACKEND = "redis://127.0.0.1:6379/0"
+CELERY_BEAT_SCHEDULE = {
+    "monitor-users-every-10-seconds": {
+        "task": "monitor_app.tasks.monitor_users",
+        "schedule": 10.0,  # run every 10 seconds
+    },
+}
+
 
 TEMPLATES = [
     {
